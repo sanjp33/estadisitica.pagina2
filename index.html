@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Estadística: publicidad, promociones y ventas</title>
+  <link rel="stylesheet" href="estilos.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+<header>
+  <div class="container">
+    <span class="eyebrow">LABORATORIO VIRTUAL DE ESTADÍSTICA</span>
+    <h1>Publicidad, promociones y ventas</h1>
+    <p>Explora datos de pequeños negocios y aprende a interpretar sus resultados.</p>
+    <div class="actions">
+      <button id="generate">Generar nueva muestra</button>
+      <button id="download" class="secondary">Descargar CSV</button>
+      <button id="print" class="secondary">Imprimir</button>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="Secciones">
+  <div class="container navlinks">
+    <a href="#inicio">Inicio</a>
+    <a href="#cuestionario">Cuestionario</a>
+    <a href="#datos">Base de datos</a>
+    <a href="#frecuencias">Frecuencias</a>
+    <a href="#descriptiva">Descriptiva</a>
+    <a href="#pruebas">Pruebas</a>
+    <a href="#graficos">Gráficos</a>
+    <a href="#interpretaciones">Interpretaciones</a>
+  </div>
+</nav>
+
+<main class="container">
+  <section id="inicio">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">01 / INVESTIGACIÓN</span>
+        <h2>¿Cómo se relacionan la publicidad y las ventas?</h2>
+      </div>
+      <span class="badge">Datos sintéticos con fines educativos</span>
+    </div>
+
+    <article class="card">
+      <h3>Objetivo estadístico</h3>
+      <p>Describir las estrategias publicitarias y promocionales de pequeños negocios y explorar su relación con las ventas mensuales y su variación.</p>
+      <p><strong>Unidad de análisis:</strong> un pequeño negocio. <strong>Periodo:</strong> último mes completo y mes anterior. <strong>Moneda:</strong> córdobas nicaragüenses (C$).</p>
+      <div class="notice">
+        La muestra es simulada. No representa a los negocios de Nicaragua. Las asociaciones encontradas no demuestran efectos causales: también influyen la ubicación, el tamaño, la temporada y otros factores.
+      </div>
+    </article>
+
+    <div class="metrics" id="metrics" aria-live="polite"></div>
+
+    <article class="card">
+      <h3>Configuración de la muestra</h3>
+      <div class="controls">
+        <label>Número de negocios
+          <input id="sampleSize" type="number" min="40" max="500" value="80">
+        </label>
+        <p class="muted">Entre 40 y 500 registros. La nueva muestra reemplaza la anterior.</p>
+      </div>
+      <p id="status" role="status"></p>
+    </article>
+  </section>
+
+  <section id="cuestionario">
+    <span class="eyebrow">02 / INSTRUMENTO</span>
+    <h2>Cuestionario y diccionario de variables</h2>
+    <article class="card">
+      <p>Las siguientes 14 preguntas definen la base simulada. “Publicidad” incluye anuncios pagados; los descuentos no forman parte del gasto publicitario. Ventas significa ingresos por ventas, no utilidad.</p>
+      <div class="table-wrap" id="questionnaire"></div>
+      <div class="notice">
+        Variables derivadas: cambio de ventas (%) = 100 × (ventas actuales − ventas anteriores) / ventas anteriores. “Creció” significa que las ventas actuales superan las anteriores. Esta comparación no ajusta por inflación ni estacionalidad.
+      </div>
+    </article>
+  </section>
+
+  <section id="datos">
+    <span class="eyebrow">03 / EXPLORACIÓN</span>
+    <h2>Base de datos interactiva</h2>
+    <article class="card">
+      <div class="controls">
+        <label>Buscar negocio o categoría
+          <input id="search" type="search" placeholder="Ejemplo: alimentos">
+        </label>
+        <label>Sector
+          <select id="sectorFilter"></select>
+        </label>
+        <label>Promoción
+          <select id="promoFilter"></select>
+        </label>
+        <button id="clear" class="secondary">Limpiar filtros</button>
+      </div>
+      <p class="muted">
+        Todos los análisis y el CSV utilizan los registros filtrados. Pulsa un encabezado para ordenar.
+      </p>
+      <p id="rowCount" aria-live="polite"></p>
+      <div class="table-wrap data-table" id="dataTable"></div>
+    </article>
+  </section>
+
+  <section id="frecuencias">
+    <span class="eyebrow">04 / DISTRIBUCIONES</span>
+    <h2>Distribuciones de frecuencia</h2>
+    <article class="card">
+      <label>Variable
+        <select id="freqVar"></select>
+      </label>
+      <div class="table-wrap" id="freqTable"></div>
+      <div class="interpretation">
+        <h3>¿Cómo se interpreta?</h3>
+        <p id="freqExplanation"></p>
+      </div>
+    </article>
+  </section>
+
+  <section id="descriptiva">
+    <span class="eyebrow">05 / RESUMEN NUMÉRICO</span>
+    <h2>Estadística descriptiva</h2>
+    <article class="card">
+      <label>Variable cuantitativa
+        <select id="descVar"></select>
+      </label>
+      <div id="descTable" class="table-wrap"></div>
+      <div class="interpretation">
+        <h3>¿Cómo se interpreta?</h3>
+        <p id="descExplanation"></p>
+      </div>
+    </article>
+  </section>
+
+  <section id="pruebas">
+    <span class="eyebrow">06 / ASOCIACIONES</span>
+    <h2>Pruebas estadísticas</h2>
+
+    <article class="card">
+      <h3>Tabla de contingencia y chi-cuadrado</h3>
+      <div class="controls">
+        <label>Variable de filas
+          <select id="chiRow"></select>
+        </label>
+        <label>Variable de columnas
+          <select id="chiCol"></select>
+        </label>
+      </div>
+      <p><strong>H₀:</strong> las variables son independientes. <strong>H₁:</strong> existe asociación entre ellas. <strong>Nivel de significación:</strong> α = 0.05.</p>
+      <div id="chiTable" class="table-wrap"></div>
+      <div id="chiResult"></div>
+      <div class="interpretation">
+        <h3>¿Cómo se interpreta?</h3>
+        <p id="chiExplanation"></p>
+      </div>
+    </article>
+
+    <article class="card">
+      <h3>Correlación de Pearson y regresión lineal simple</h3>
+      <div class="controls">
+        <label>Variable explicativa X
+          <select id="xVar"></select>
+        </label>
+        <label>Variable de respuesta Y
+          <select id="yVar"></select>
+        </label>
+      </div>
+      <div id="regResult"></div>
+      <div class="interpretation">
+        <h3>¿Cómo se interpreta?</h3>
+        <p id="regExplanation"></p>
+      </div>
+
+      <h4>Predicción dentro del rango observado</h4>
+      <div class="controls">
+        <label id="predictionLabel">Valor de X
+          <input id="prediction" type="number" step="any">
+        </label>
+        <button id="predict">Calcular predicción</button>
+      </div>
+      <p id="predictionResult" role="status"></p>
+
+      <details>
+        <summary>Valores observados, estimados y residuos</summary>
+        <div id="estimates" class="table-wrap data-table"></div>
+      </details>
+    </article>
+  </section>
+
+  <section id="graficos">
+    <span class="eyebrow">07 / VISUALIZACIÓN</span>
+    <h2>Gráficos vinculados con la selección</h2>
+    <div class="chart-grid">
+      <article class="card">
+        <h3>Negocios por canal publicitario</h3>
+        <div id="barChart" class="chart"></div>
+        <h4>¿Cómo se interpreta?</h4>
+        <p id="barText"></p>
+      </article>
+      <article class="card">
+        <h3>Participación por sector</h3>
+        <div id="pieChart" class="chart"></div>
+        <h4>¿Cómo se interpreta?</h4>
+        <p id="pieText"></p>
+      </article>
+      <article class="card">
+        <h3 id="histTitle">Histograma</h3>
+        <div id="histChart" class="chart"></div>
+        <h4>¿Cómo se interpreta?</h4>
+        <p id="histText"></p>
+      </article>
+      <article class="card">
+        <h3>Polígono de frecuencias</h3>
+        <div id="polygonChart" class="chart"></div>
+        <h4>¿Cómo se interpreta?</h4>
+        <p>Une las marcas de clase del histograma con sus frecuencias.</p>
+      </article>
+      <article class="card wide">
+        <h3>Dispersión y recta de regresión</h3>
+        <div id="scatterChart" class="chart"></div>
+        <h4>¿Cómo se interpreta?</h4>
+        <p id="scatterText"></p>
+      </article>
+      <article class="card wide">
+        <h3>Ventas mensuales promedio por promoción</h3>
+        <div id="comparisonChart" class="chart"></div>
+        <h4>¿Cómo se interpreta?</h4>
+        <p id="comparisonText"></p>
+      </article>
+    </div>
+  </section>
+
+  <section id="interpretaciones">
+    <span class="eyebrow">08 / LECTURA CRÍTICA</span>
+    <h2>Conclusiones y límites</h2>
+    <article class="card">
+      <div id="conclusions"></div>
+    </article>
+  </section>
+</main>
+
+<footer class="container">
+  Laboratorio educativo · Publicidad, promociones y ventas en pequeños negocios.
+</footer>
+</body>
+</html>
